@@ -24,15 +24,18 @@ public class RegistrationSteps extends BaseClass {
 	@When("^I enter the credentials info$")
 	public void i_enter_the_credentials_info(DataTable infotable) throws Throwable {
 		WebDriverWait wait = new WebDriverWait(driver, 15);
-		Thread.sleep(3000);
-		WebElement signUpLink = driver.findElement(By.xpath("//div[@id='navbar-collapse']/ul/li[2]/a"));
-		wait.until(ExpectedConditions.elementToBeClickable(signUpLink)).click();
+
 		List<Map<String, String>> maps = infotable.asMaps(String.class, String.class);
 
 		for (Map<String, String> mapCell : maps) {
+
+			Thread.sleep(3000);
+			WebElement signUpLink = driver.findElement(By.xpath("//div[@id='navbar-collapse']/ul/li[2]/a"));
+			wait.until(ExpectedConditions.elementToBeClickable(signUpLink)).click();
+
 			WebElement dropdown = driver.findElement(By.id("payment_plan_id"));
 			Select sel = new Select(dropdown);
-			
+
 			String payplan = mapCell.get("payPlan");
 			sel.selectByVisibleText(payplan);
 
@@ -52,7 +55,7 @@ public class RegistrationSteps extends BaseClass {
 			String pword = mapCell.get("pword");
 			driver.findElement(By.name("password")).sendKeys(pword);
 			driver.findElement(By.name("passwordconfirm")).sendKeys(pword);
-
+			driver.close();
 		}
 
 	}
@@ -111,6 +114,36 @@ public class RegistrationSteps extends BaseClass {
 		// List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
 		// E,K,V must be a scalar (String, Integer, Date, enum etc)
 
+	}
+
+	@When("^I enter the credentials info such as \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"  and \"([^\"]*)\"$")
+	public void i_enter_the_credentials_info_such_as_and_and_and_and_and(String payplan, String fname, String lname, String email,
+		String uname, String pword) throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 15);
+		Thread.sleep(3000);
+		WebElement signUpLink = driver.findElement(By.xpath("//div[@id='navbar-collapse']/ul/li[2]/a"));
+		wait.until(ExpectedConditions.elementToBeClickable(signUpLink)).click();
+
+		WebElement dropdown = driver.findElement(By.id("payment_plan_id"));
+		Select sel = new Select(dropdown);
+		sel.selectByVisibleText(payplan);
+		
+		WebElement firstN = driver.findElement(By.name("first_name"));
+		WebElement lastN = driver.findElement(By.name("surname"));
+		WebElement emailAdd = driver.findElement(By.name("email"));
+		WebElement confirmEmail = driver.findElement(By.name("email_confirm"));
+		WebElement userN = driver.findElement(By.name("username"));
+		WebElement pWord = driver.findElement(By.name("password"));
+		WebElement pconfirm = driver.findElement(By.name("passwordconfirm"));
+		firstN.sendKeys(fname);
+		lastN.sendKeys(lname);
+		emailAdd.sendKeys(email);
+		confirmEmail.sendKeys(email);
+		userN.sendKeys(uname);
+		pWord.sendKeys(pword);
+		pconfirm.sendKeys(pword);
+		
+		
 	}
 
 }
